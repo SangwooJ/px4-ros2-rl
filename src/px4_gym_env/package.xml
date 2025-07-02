@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>px4_gym_env</name>
+  <version>0.1.0</version>
+  <description>PX4+Gazebo 기반 강화학습 환경</description>
+
+  <maintainer email="ndrw5580@gmail.com">SangwooJ</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- 런타임 의존성 -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>px4_msgs</exec_depend>
+  <exec_depend>px4_ros_com</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>gymnasium</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+</package>
