@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# param set NAV_DLL_ACT 0 is needed for offboard without gcs
 import os
 import time
 import numpy as np
@@ -29,8 +30,8 @@ from std_srvs.srv import Trigger
 
 class PX4GymEnv(Node, Env):
     def __init__(self,
-                 fixed_altitude: float = 5.0,
-                 action_period: float = 0.1,
+                 fixed_altitude: float = 50.0,
+                 action_period: float = 1.0,
                  mode_rate_hz: float = 50.0,
                  minimap_size=(64,64),
                  zmq_address='tcp://localhost:5555'):
@@ -208,7 +209,15 @@ class PX4GymEnv(Node, Env):
                 s.arming_state == VehicleStatus.ARMING_STATE_ARMED):
                 break
             time.sleep(0.02)
-
+        # 7) takeoff
+        for _ in range(10):
+            # TrajectorySetpoint: 고정 고도만
+            sp = TrajectorySetpoint()
+            sp.timestamp = int(self.get_clock().now().nanoseconds / 1000)
+            sp.position[2] = -self.fixed_alt
+            self.traj_pub.publish(sp)
+            time.sleep(1)
+        print("takeoff complete")
         return self._build_obs(), {}
 
     def step(self, action):
